@@ -8,10 +8,10 @@
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    #loading, #status {
+    #container p {
+      margin: 10px 0;
       opacity: 0;
       transition: opacity 0.5s ease;
-      margin: 10px 0;
     }
     .visible {
       opacity: 1;
@@ -25,13 +25,9 @@
 </head>
 <body>
   <h1>Srishti's Slick File</h1>
-  <p>File couldn't load, does not exist. </p>
+  <p>File couldn't load, does not exist.</p>
 
-  <div id="container">
-    <p id="loading"></p>
-    <p id="status"></p>
-    <div id="extra"></div> <!-- place to add GIF/text -->
-  </div>
+  <div id="container"></div>
 
   <script>
     const steps = [
@@ -41,24 +37,32 @@
       { type: "explosion", src: "explosiongif.gif", text: "Computer exploded, file too big." }
     ];
 
-    const loadingEl = document.getElementById("loading");
-    const statusEl = document.getElementById("status");
-    const extraEl = document.getElementById("extra");
+    const container = document.getElementById("container");
 
     function showStep(step) {
-      if (typeof step.loading === "string") {
-        loadingEl.textContent = step.loading;
-        statusEl.textContent = step.status;
-        loadingEl.classList.add("visible");
-        statusEl.classList.add("visible");
-      } else if (step.type === "explosion") {
+      // Clear previous content
+      container.innerHTML = "";
+
+      if (step.type === "explosion") {
         const img = document.createElement("img");
         img.src = step.src;
         img.alt = "Explosion";
+        container.appendChild(img);
+
         const p = document.createElement("p");
         p.textContent = step.text;
-        extraEl.appendChild(img);
-        extraEl.appendChild(p);
+        p.classList.add("visible");
+        container.appendChild(p);
+      } else {
+        const loadingEl = document.createElement("p");
+        loadingEl.textContent = step.loading;
+        loadingEl.classList.add("visible");
+        container.appendChild(loadingEl);
+
+        const statusEl = document.createElement("p");
+        statusEl.textContent = step.status;
+        statusEl.classList.add("visible");
+        container.appendChild(statusEl);
       }
     }
 
