@@ -2,21 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Delayed Elements</title>
+  <title>Loading Screen</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    .box {
-      padding: 10px;
-      margin: 10px 0;
-      background-color: lightblue;
-      border-radius: 8px;
+    #loading, #status {
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 0.5s ease;
+      margin: 10px 0;
     }
-    .box.visible {
+    .visible {
       opacity: 1;
     }
     img {
@@ -29,51 +26,46 @@
 <body>
   <h1>Srishti's Slick File</h1>
   <p>File couldn't load, does not exist. </p>
-  <div id="container"></div>
+
+  <div id="container">
+    <p id="loading"></p>
+    <p id="status"></p>
+  </div>
 
   <script>
-    // Items to appear one by one
-    const items = [
-      "loading...20%",
-      "Wait, what's going on ... the file is loading in now?",
-      "loading...50%",
-      "Hold on... this is a big one",
-      "loading...90%",
-      "OH NO WHY IS THE FILE SO BIG!",
-      { type: "imageWithText", src: "explosiongif.gif", text: "Computer exploded, file too big." }
+    // Each step has a loading line + a status line
+    const steps = [
+      { loading: "loading...20%", status: "Wait, what's going on ... the file is loading in now?" },
+      { loading: "loading...50%", status: "Hold on... this is a big one" },
+      { loading: "loading...90%", status: "OH NO WHY IS THE FILE SO BIG!" },
+      { type: "explosion", src: "explosiongif.gif", text: "Computer exploded, file too big." }
     ];
 
-    const container = document.getElementById("container");
+    const loadingEl = document.getElementById("loading");
+    const statusEl = document.getElementById("status");
 
-    function loadElements() {
-      items.forEach((item, index) => {
-        setTimeout(() => {
-          const div = document.createElement("div");
-          div.className = "box";
+    function showStep(step) {
+      if (typeof step.loading === "string") {
+        loadingEl.textContent = step.loading;
+        statusEl.textContent = step.status;
+        loadingEl.classList.add("visible");
+        statusEl.classList.add("visible");
+      } else if (step.type === "explosion") {
+        // Replace text with explosion + message
+        document.getElementById("container").innerHTML = `
+          <img src="${step.src}" alt="Explosion">
+          <p>${step.text}</p>
+        `;
+      }
+    }
 
-          if (typeof item === "string") {
-            div.textContent = item;
-          } else if (item.type === "imageWithText") {
-            const img = document.createElement("img");
-            img.src = item.src;
-            img.alt = "Explosion";
-            div.appendChild(img);
-
-            const p = document.createElement("p");
-            p.textContent = item.text;
-            div.appendChild(p);
-          }
-
-          container.appendChild(div);
-
-          // Trigger fade-in
-          setTimeout(() => div.classList.add("visible"), 50);
-        }, 3000 * (index + 1)); // Delay grows: 3s, 6s, 9s...
+    function runSteps() {
+      steps.forEach((step, index) => {
+        setTimeout(() => showStep(step), 3000 * (index + 1));
       });
     }
 
-    // Run AFTER the page is loaded
-    window.onload = loadElements;
+    window.onload = runSteps;
   </script>
 </body>
 </html>
