@@ -30,10 +30,10 @@
   <div id="container">
     <p id="loading"></p>
     <p id="status"></p>
+    <div id="extra"></div> <!-- place to add GIF/text -->
   </div>
 
   <script>
-    // Each step has a loading line + a status line
     const steps = [
       { loading: "loading...20%", status: "Wait, what's going on ... the file is loading in now?" },
       { loading: "loading...50%", status: "Hold on... this is a big one" },
@@ -43,6 +43,7 @@
 
     const loadingEl = document.getElementById("loading");
     const statusEl = document.getElementById("status");
+    const extraEl = document.getElementById("extra");
 
     function showStep(step) {
       if (typeof step.loading === "string") {
@@ -51,11 +52,13 @@
         loadingEl.classList.add("visible");
         statusEl.classList.add("visible");
       } else if (step.type === "explosion") {
-        // Replace text with explosion + message
-        document.getElementById("container").innerHTML = `
-          <img src="${step.src}" alt="Explosion">
-          <p>${step.text}</p>
-        `;
+        const img = document.createElement("img");
+        img.src = step.src;
+        img.alt = "Explosion";
+        const p = document.createElement("p");
+        p.textContent = step.text;
+        extraEl.appendChild(img);
+        extraEl.appendChild(p);
       }
     }
 
