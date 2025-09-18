@@ -34,6 +34,7 @@
   <script>
     // Items to appear one by one
     const items = [
+      "",
       "loading...20%",
       "Wait, what's going on ... the file is loading in now?",
       "loading...50%",
@@ -68,7 +69,7 @@
 
           // Trigger fade-in
           setTimeout(() => div.classList.add("visible"), 50);
-        }, 3000 * (index + 1)); // Delay grows: 3s, 6s, 9s...
+        }, 2500 * (index + 1)); // Delay grows: 3s, 6s, 9s...
       });
     }
 
