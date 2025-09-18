@@ -22,7 +22,7 @@
     img {
       max-width: 200px;
       display: block;
-      margin: 0 auto;
+      margin: 10px auto;
     }
   </style>
 </head>
@@ -32,7 +32,7 @@
   <div id="container"></div>
 
   <script>
-    // The elements you want to show one by one
+    // Items to appear one by one
     const items = [
       "loading...20%",
       "Wait, what's going on ... the file is loading in now?",
@@ -66,12 +66,14 @@
 
           container.appendChild(div);
 
+          // Trigger fade-in
           setTimeout(() => div.classList.add("visible"), 50);
-        }, 3000 * (index + 1));
+        }, 3000 * (index + 1)); // Delay grows: 3s, 6s, 9s...
       });
     }
 
-    loadElements();
+    // Run AFTER the page is loaded
+    window.onload = loadElements;
   </script>
 </body>
 </html>
