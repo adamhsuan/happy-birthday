@@ -22,16 +22,21 @@
   </style>
 </head>
 <body>
-  <h1>Elements appear every 3 seconds</h1>
+  <h1>Srishti's Slick File</h1>
+  <p>File couldn't load, does not exist. </p>
   <div id="container"></div>
 
   <script>
     // The elements you want to show one by one
     const items = [
-      "First element",
-      "Second element",
-      "Third element",
-      "Fourth element"
+      "loading...20%"
+      "Wait, whats going on ... the file is loading in now?",
+      "loading...50%"
+      "Hold on... this is a big one",
+      "loading...90%"
+      "OH NO WHY IS THE FILE SO BIG!",
+      { type: "imageWithText", src: "explosion.gif", text: "Computer exploded, file too big." }
+
     ];
 
     const container = document.getElementById("container");
