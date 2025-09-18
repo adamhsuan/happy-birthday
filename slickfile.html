@@ -19,6 +19,11 @@
     .box.visible {
       opacity: 1;
     }
+    img {
+      max-width: 200px;
+      display: block;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
@@ -29,30 +34,40 @@
   <script>
     // The elements you want to show one by one
     const items = [
-      "loading...20%"
-      "Wait, whats going on ... the file is loading in now?",
-      "loading...50%"
+      "loading...20%",
+      "Wait, what's going on ... the file is loading in now?",
+      "loading...50%",
       "Hold on... this is a big one",
-      "loading...90%"
+      "loading...90%",
       "OH NO WHY IS THE FILE SO BIG!",
       { type: "imageWithText", src: "explosiongif.gif", text: "Computer exploded, file too big." }
-
     ];
 
     const container = document.getElementById("container");
 
-    // Function to add elements with a delay
     function loadElements() {
-      items.forEach((text, index) => {
+      items.forEach((item, index) => {
         setTimeout(() => {
           const div = document.createElement("div");
           div.className = "box";
-          div.textContent = text;
+
+          if (typeof item === "string") {
+            div.textContent = item;
+          } else if (item.type === "imageWithText") {
+            const img = document.createElement("img");
+            img.src = item.src;
+            img.alt = "Explosion";
+            div.appendChild(img);
+
+            const p = document.createElement("p");
+            p.textContent = item.text;
+            div.appendChild(p);
+          }
+
           container.appendChild(div);
 
-          // Fade in effect
           setTimeout(() => div.classList.add("visible"), 50);
-        }, 3000 * (index + 1)); // 3s, 6s, 9s, ...
+        }, 3000 * (index + 1));
       });
     }
 
