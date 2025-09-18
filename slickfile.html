@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delayed Elements</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .box {
+      padding: 10px;
+      margin: 10px 0;
+      background-color: lightblue;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .box.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <h1>Elements appear every 3 seconds</h1>
+  <div id="container"></div>
+
+  <script>
+    // The elements you want to show one by one
+    const items = [
+      "First element",
+      "Second element",
+      "Third element",
+      "Fourth element"
+    ];
+
+    const container = document.getElementById("container");
+
+    // Function to add elements with a delay
+    function loadElements() {
+      items.forEach((text, index) => {
+        setTimeout(() => {
+          const div = document.createElement("div");
+          div.className = "box";
+          div.textContent = text;
+          container.appendChild(div);
+
+          // Fade in effect
+          setTimeout(() => div.classList.add("visible"), 50);
+        }, 3000 * (index + 1)); // 3s, 6s, 9s, ...
+      });
+    }
+
+    loadElements();
+  </script>
+</body>
+</html>
