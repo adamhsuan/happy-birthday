@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Loading Screen</title>
+  <title>Loading Animation</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    #loading, #status, #extra {
+    #loadingLine, #statusLine, #finalStep {
       margin: 10px 0;
       opacity: 0;
       transition: opacity 0.5s ease;
@@ -25,15 +25,16 @@
 </head>
 <body>
   <h1>Srishti's Slick File</h1>
-  <p>File couldn't load, does not exist. :(</p>
+  <p>File couldn't load, does not exist :(</p>
 
   <div id="container">
-    <p id="loading"></p>
-    <p id="status"></p>
-    <div id="extra"></div>
+    <p id="loadingLine"></p>
+    <p id="statusLine"></p>
+    <div id="finalStep"></div>
   </div>
 
   <script>
+    // Steps to show
     const steps = [
       { loading: "loading...20%", status: "Wait, what's going on ... the file is loading in now?" },
       { loading: "loading...50%", status: "Hold on... this is a big one" },
@@ -41,36 +42,36 @@
       { type: "explosion", src: "explosiongif.gif", text: "Computer exploded, file too big." }
     ];
 
-    const loadingEl = document.getElementById("loading");
-    const statusEl = document.getElementById("status");
-    const extraEl = document.getElementById("extra");
+    const loadingLine = document.getElementById("loadingLine");
+    const statusLine = document.getElementById("statusLine");
+    const finalStep = document.getElementById("finalStep");
 
     function showStep(step) {
+      // Clear previous fade-in
+      loadingLine.classList.remove("visible");
+      statusLine.classList.remove("visible");
+      finalStep.classList.remove("visible");
+
       if (step.type === "explosion") {
-        // Hide the loading and status lines
-        loadingEl.style.display = "none";
-        statusEl.style.display = "none";
+        // Hide loading/status lines
+        loadingLine.style.display = "none";
+        statusLine.style.display = "none";
 
-        // Add GIF and text
-        const img = document.createElement("img");
-        img.src = step.src;
-        img.alt = "Explosion";
-        extraEl.appendChild(img);
-
-        const p = document.createElement("p");
-        p.textContent = step.text;
-        extraEl.appendChild(p);
-
-        extraEl.classList.add("visible");
+        // Show explosion GIF + message
+        finalStep.innerHTML = `
+          <img src="${step.src}" alt="Explosion">
+          <p>${step.text}</p>
+        `;
+        finalStep.classList.add("visible");
       } else {
-        // Update the loading and status lines
-        loadingEl.textContent = step.loading;
-        statusEl.textContent = step.status;
+        // Show loading and status lines
+        loadingLine.style.display = "block";
+        statusLine.style.display = "block";
+        loadingLine.textContent = step.loading;
+        statusLine.textContent = step.status;
 
-        loadingEl.style.display = "block";
-        statusEl.style.display = "block";
-        loadingEl.classList.add("visible");
-        statusEl.classList.add("visible");
+        loadingLine.classList.add("visible");
+        statusLine.classList.add("visible");
       }
     }
 
