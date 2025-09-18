@@ -8,7 +8,7 @@
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    #container p {
+    #loading, #status, #extra {
       margin: 10px 0;
       opacity: 0;
       transition: opacity 0.5s ease;
@@ -27,7 +27,11 @@
   <h1>Srishti's Slick File</h1>
   <p>File couldn't load, does not exist.</p>
 
-  <div id="container"></div>
+  <div id="container">
+    <p id="loading"></p>
+    <p id="status"></p>
+    <div id="extra"></div>
+  </div>
 
   <script>
     const steps = [
@@ -37,32 +41,36 @@
       { type: "explosion", src: "explosiongif.gif", text: "Computer exploded, file too big." }
     ];
 
-    const container = document.getElementById("container");
+    const loadingEl = document.getElementById("loading");
+    const statusEl = document.getElementById("status");
+    const extraEl = document.getElementById("extra");
 
     function showStep(step) {
-      // Clear previous content
-      container.innerHTML = "";
-
       if (step.type === "explosion") {
+        // Hide the loading and status lines
+        loadingEl.style.display = "none";
+        statusEl.style.display = "none";
+
+        // Add GIF and text
         const img = document.createElement("img");
         img.src = step.src;
         img.alt = "Explosion";
-        container.appendChild(img);
+        extraEl.appendChild(img);
 
         const p = document.createElement("p");
         p.textContent = step.text;
-        p.classList.add("visible");
-        container.appendChild(p);
-      } else {
-        const loadingEl = document.createElement("p");
-        loadingEl.textContent = step.loading;
-        loadingEl.classList.add("visible");
-        container.appendChild(loadingEl);
+        extraEl.appendChild(p);
 
-        const statusEl = document.createElement("p");
+        extraEl.classList.add("visible");
+      } else {
+        // Update the loading and status lines
+        loadingEl.textContent = step.loading;
         statusEl.textContent = step.status;
+
+        loadingEl.style.display = "block";
+        statusEl.style.display = "block";
+        loadingEl.classList.add("visible");
         statusEl.classList.add("visible");
-        container.appendChild(statusEl);
       }
     }
 
