@@ -2,18 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Loading Animation</title>
+  <title>Delayed Elements</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    #loadingLine, #statusLine, #finalStep {
-      margin: 10px 0;
+    .item {
       opacity: 0;
       transition: opacity 0.5s ease;
+      margin: 10px 0;
     }
-    .visible {
+    .item.visible {
       opacity: 1;
     }
     img {
@@ -27,61 +27,51 @@
   <h1>Srishti's Slick File</h1>
   <p>File couldn't load, does not exist :(</p>
 
-  <div id="container">
-    <p id="loadingLine"></p>
-    <p id="statusLine"></p>
-    <div id="finalStep"></div>
-  </div>
+  <div id="container"></div>
 
   <script>
-    // Steps to show
-    const steps = [
-      { loading: "loading...20%", status: "Wait, what's going on ... the file is loading in now?" },
-      { loading: "loading...50%", status: "Hold on... this is a big one" },
-      { loading: "loading...90%", status: "OH NO WHY IS THE FILE SO BIG!?" },
-      { type: "explosion", src: "explosiongif.gif", text: "Computer exploded, file too big." }
+    const items = [
+      "loading...20%",
+      "Wait, what's going on ... the file is loading in now?",
+      "loading...50%",
+      "Hold on... this is a big one",
+      "loading...90%",
+      "OH NO WHY IS THE FILE SO BIG!?",
+      { type: "imageWithText", src: "explosiongif.gif", text: "Computer exploded, file too big." }
     ];
 
-    const loadingLine = document.getElementById("loadingLine");
-    const statusLine = document.getElementById("statusLine");
-    const finalStep = document.getElementById("finalStep");
+    const container = document.getElementById("container");
 
-    function showStep(step) {
-      // Clear previous fade-in
-      loadingLine.classList.remove("visible");
-      statusLine.classList.remove("visible");
-      finalStep.classList.remove("visible");
+    function showItem(item) {
+      const div = document.createElement("div");
+      div.classList.add("item");
 
-      if (step.type === "explosion") {
-        // Hide loading/status lines
-        loadingLine.style.display = "none";
-        statusLine.style.display = "none";
+      if (typeof item === "string") {
+        div.textContent = item;
+      } else if (item.type === "imageWithText") {
+        const img = document.createElement("img");
+        img.src = item.src;
+        img.alt = "Explosion";
+        div.appendChild(img);
 
-        // Show explosion GIF + message
-        finalStep.innerHTML = `
-          <img src="${step.src}" alt="Explosion">
-          <p>${step.text}</p>
-        `;
-        finalStep.classList.add("visible");
-      } else {
-        // Show loading and status lines
-        loadingLine.style.display = "block";
-        statusLine.style.display = "block";
-        loadingLine.textContent = step.loading;
-        statusLine.textContent = step.status;
-
-        loadingLine.classList.add("visible");
-        statusLine.classList.add("visible");
+        const p = document.createElement("p");
+        p.textContent = item.text;
+        div.appendChild(p);
       }
+
+      container.appendChild(div);
+
+      // Fade in
+      setTimeout(() => div.classList.add("visible"), 50);
     }
 
-    function runSteps() {
-      steps.forEach((step, index) => {
-        setTimeout(() => showStep(step), 3000 * (index + 1));
+    function runItems() {
+      items.forEach((item, index) => {
+        setTimeout(() => showItem(item), 3000 * index);
       });
     }
 
-    window.onload = runSteps;
+    window.onload = runItems;
   </script>
 </body>
 </html>
